@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Agenda de Projetos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/app.css">
+
+<link rel="manifest" href="manifest.json">
+</head>
+
+<body class="bg-slate-100 min-h-screen">
+
+<div class="max-w-5xl mx-auto p-4">
+
+<header class="flex justify-between items-center mb-4">
+<h1 class="text-2xl font-bold">📅 Agenda de Projetos</h1>
+
+<select id="projectFilter" class="border rounded px-2 py-1">
+<option value="all">Todos os projetos</option>
+</select>
+</header>
+
+<div class="flex gap-2 mb-4">
+<button id="prevMonth" class="btn">◀</button>
+<button id="todayBtn" class="btn-primary">Hoje</button>
+<button id="nextMonth" class="btn">▶</button>
+</div>
+
+<h2 id="monthTitle" class="text-center text-xl font-semibold mb-3"></h2>
+
+<div class="bg-white rounded-xl shadow p-4 mb-4">
+<div class="grid grid-cols-7 text-center font-semibold mb-2">
+<div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div>
+<div>Qui</div><div>Sex</div><div>Sáb</div>
+</div>
+<div id="calendarGrid" class="grid grid-cols-7 gap-2"></div>
+</div>
+
+<div class="bg-white rounded-xl shadow p-4 mb-4">
+<h3 class="font-bold mb-2">➕ Criar / Editar evento</h3>
+
+<input id="eventTitle" placeholder="Projeto" class="input">
+<select id="eventType" class="input">
+<option>Aula</option>
+<option>Reunião</option>
+<option>Entrega</option>
+<option>Outro</option>
+</select>
+<input id="eventWith" placeholder="Com quem" class="input">
+<input id="eventLink" placeholder="Link (opcional)" class="input">
+<input type="color" id="eventColor" value="#2563eb">
+
+<p class="text-sm text-slate-500 mt-2">
+Clique nos dias do calendário para selecionar datas
+</p>
+
+<button id="saveEventBtn" class="btn-primary w-full mt-3">
+Salvar evento(s)
+</button>
+</div>
+
+<div class="bg-white rounded-xl shadow p-4">
+<h3 id="dayTitle" class="font-bold mb-2">Eventos do dia</h3>
+<div id="dayEvents"></div>
+</div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/events.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+</body>
+</html>
