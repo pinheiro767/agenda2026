@@ -1,50 +1,85 @@
-let projetos = JSON.parse(localStorage.getItem("projetos")) || [];
+// 🔹 Carrega projetos com segurança
+let projetos = [];
 
+try {
+  projetos = JSON.parse(localStorage.getItem("projetos")) || [];
+} catch (e) {
+  projetos = [];
+  localStorage.removeItem("projetos");
+}
+
+// 🔹 Salvar projeto
 function salvarProjeto() {
-  const projeto = {
-    nome: document.getElementById("nome").value,
-    tipo: document.getElementById("tipo").value,
-    status: document.getElementById("status").value,
-    obs: document.getElementById("obs").value
-  };
+  const nome = document.getElementById("nome").value.trim();
+  const tipo = document.getElementById("tipo").value;
+  const status = document.getElementById("status").value;
+  const obs = document.getElementById("obs").value.trim();
 
-  if (projeto.nome === "") {
-    alert("Digite o nome do projeto");
+  if (!nome) {
+    alert("Digite o nome do projeto.");
     return;
   }
 
-  projetos.push(projeto);
-  localStorage.setItem("projetos", JSON.stringify(projetos));
+  const projeto = {
+    id: crypto.randomUUID(),
+    nome,
+    tipo,
+    status,
+    obs
+  };
 
+  projetos.push(projeto);
+  persistirProjetos();
   limparFormulario();
   mostrarProjetos();
 }
 
+// 🔹 Persistência centralizada
+function persistirProjetos() {
+  localStorage.setItem("projetos", JSON.stringify(projetos));
+}
+
+// 🔹 Mostrar projetos
 function mostrarProjetos() {
   const lista = document.getElementById("listaProjetos");
   lista.innerHTML = "";
 
+  if (projetos.length === 0) {
+    lista.innerHTML = "<p class='text-slate-500 text-sm'>Nenhum projeto cadastrado.</p>";
+    return;
+  }
+
   projetos.forEach((p, index) => {
-    lista.innerHTML += `
-      <div class="projeto">
-        <b>${p.nome}</b> (${p.tipo})<br>
-        <span class="status">Status:</span> ${p.status}<br>
-        ${p.obs}<br><br>
-        <button onclick="removerProjeto(${index})">Remover</button>
-      </div>
+    const div = document.createElement("div");
+    div.className = "projeto";
+
+    div.innerHTML = `
+      <b>${p.nome}</b> (${p.tipo})<br>
+      <span class="status">Status:</span> ${p.status}<br>
+      ${p.obs ? p.obs + "<br><br>" : "<br>"}
+      <button onclick="removerProjeto(${index})">Remover</button>
     `;
+
+    lista.appendChild(div);
   });
 }
 
+// 🔹 Remover projeto
 function removerProjeto(index) {
+  if (!confirm("Deseja remover este projeto?")) return;
+
   projetos.splice(index, 1);
-  localStorage.setItem("projetos", JSON.stringify(projetos));
+  persistirProjetos();
   mostrarProjetos();
 }
 
+// 🔹 Limpar formulário
 function limparFormulario() {
   document.getElementById("nome").value = "";
   document.getElementById("obs").value = "";
+  document.getElementById("tipo").selectedIndex = 0;
+  document.getElementById("status").selectedIndex = 0;
 }
 
+// 🔹 Inicialização
 mostrarProjetos();
