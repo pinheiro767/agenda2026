@@ -22,3 +22,8 @@ function getActiveProjectFilter() {
   return select ? select.value : "all";
 }
 
+<script src="./storage.js"></script>
+<script src="./filters.js"></script>
+<script src="./calendar.js"></script>
+<script src="./events.js"></script>
+
