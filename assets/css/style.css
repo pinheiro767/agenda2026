@@ -1,0 +1,63 @@
+/* app.css */
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#calendarGrid div {
+  min-height: 70px;
+}
+
+/* Dia do calendário */
+.calendar-day {
+  border-radius: 12px;
+  padding: 6px;
+  cursor: pointer;
+  background: #ffffff;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.calendar-day.selected {
+  border-color: #2563eb;
+  background: #dbeafe;
+}
+
+.calendar-day.today {
+  border-color: #16a34a;
+}
+
+/* Bolinhas de eventos */
+.event-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 3px;
+}
+
+/* Evento do dia */
+.event-item {
+  padding: 10px;
+  border-left: 6px solid;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.event-item a {
+  color: #2563eb;
+  font-size: 0.85rem;
+}
+
+/* Botão excluir */
+.delete-btn {
+  color: #dc2626;
+  font-size: 0.85rem;
+  cursor: pointer;
+}

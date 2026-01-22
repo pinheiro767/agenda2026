@@ -1,0 +1,64 @@
+.btn {
+  background: #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #cbd5f5;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.calendar-day {
+  background: white;
+  padding: 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.calendar-day:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.calendar-day.selected {
+  background: #dbeafe;
+  border-color: #2563eb;
+}
+
+.calendar-day.today {
+  border-color: #16a34a;
+}
+
+.event-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.event-card {
+  border-left: 6px solid;
+  background: #f8fafc;
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+}
+
+.event-actions {
+  font-size: 0.8rem;
+  color: #2563eb;
+  cursor: pointer;
+}
