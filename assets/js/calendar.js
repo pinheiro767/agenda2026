@@ -1,5 +1,7 @@
 let currentDate = new Date();
-let selectedDates = [];
+
+// 🔴 TORNA GLOBAL (events.js consegue acessar)
+window.selectedDates = [];
 let activeDate = null;
 
 const calendarGrid = document.getElementById("calendarGrid");
@@ -24,62 +26,72 @@ function renderCalendar() {
   }
 
   const events = getEvents();
-  const filter = getActiveProjectFilter();
+
+  // 🟢 FILTRO SEGURO (não quebra)
+  const filter = typeof getActiveProjectFilter === "function"
+    ? getActiveProjectFilter()
+    : "all";
+
   const todayStr = new Date().toISOString().split("T")[0];
 
   for (let d = 1; d <= days; d++) {
-    const date = `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
     const cell = document.createElement("div");
     cell.className = "calendar-day";
 
     if (date === todayStr) cell.classList.add("today");
-    if (selectedDates.includes(date)) cell.classList.add("selected");
+    if (window.selectedDates.includes(date)) cell.classList.add("selected");
 
-    cell.innerHTML = `<strong>${d}</strong><div></div>`;
+    cell.innerHTML = `<strong>${d}</strong><div class="dots"></div>`;
+    const dots = cell.querySelector(".dots");
 
-    const dots = cell.querySelector("div");
+    events
+      .filter(e =>
+        e.date === date &&
+        (filter === "all" || e.title === filter)
+      )
+      .forEach(e => {
+        const dot = document.createElement("span");
+        dot.className = "event-dot";
+        dot.style.background = e.color;
+        dots.appendChild(dot);
+      });
 
-    events.filter(e =>
-      e.date === date &&
-      (filter === "all" || e.title === filter)
-    ).forEach(e => {
-      const dot = document.createElement("span");
-      dot.className = "event-dot";
-      dot.style.background = e.color;
-      dots.appendChild(dot);
-    });
-
-    cell.onclick = () => toggleDate(date);
-    cell.ondblclick = () => showDayEvents(date);
+    // 🟢 CLIQUE ÚNICO FUNCIONA NO MOBILE
+    cell.onclick = () => {
+      toggleDate(date);
+      showDayEvents(date);
+    };
 
     calendarGrid.appendChild(cell);
   }
 }
 
 function toggleDate(date) {
-  if (selectedDates.includes(date)) {
-    selectedDates = selectedDates.filter(d => d !== date);
+  if (window.selectedDates.includes(date)) {
+    window.selectedDates = window.selectedDates.filter(d => d !== date);
   } else {
-    selectedDates.push(date);
+    window.selectedDates.push(date);
   }
   renderCalendar();
 }
 
 document.getElementById("prevMonth").onclick = () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
-  selectedDates = [];
+  window.selectedDates = [];
   renderCalendar();
 };
 
 document.getElementById("nextMonth").onclick = () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
-  selectedDates = [];
+  window.selectedDates = [];
   renderCalendar();
 };
 
 document.getElementById("todayBtn").onclick = () => {
   currentDate = new Date();
-  selectedDates = [];
+  window.selectedDates = [];
   renderCalendar();
 };
 
